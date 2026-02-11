@@ -1,0 +1,11 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Local settings / secrets
+appsettings.Development.json
+.env
+.env.*

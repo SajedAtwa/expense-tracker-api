@@ -1,11 +1,16 @@
-bin/
-obj/
-.vs/
-.vscode/
-*.user
-*.suo
-
-# Local settings / secrets
-appsettings.Development.json
+# env / secrets
 .env
-.env.*
+
+# sqlite db files
+*.db
+*.db-shm
+*.db-wal
+
+# build output
+**/bin/
+**/obj/
+
+# user secrets / IDE
+.vscode/
+.idea/
+.DS_Store

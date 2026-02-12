@@ -15,8 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IExpensesRepo, ExpensesRepo>();
 builder.Services.AddDbContext<ExpenseTrackerContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ExpenseTrackerConnection")));
-
+    options.UseSqlite("Data Source=expenses.db"));
 
 var app = builder.Build();
 

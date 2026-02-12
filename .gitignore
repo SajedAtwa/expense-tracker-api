@@ -5,10 +5,16 @@
 *.db
 *.db-shm
 *.db-wal
+*.key
+*.pem
 
+
+# build output
 # build output
 **/bin/
 **/obj/
+publish/
+publish-linux/
 
 # user secrets / IDE
 .vscode/

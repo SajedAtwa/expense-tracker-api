@@ -14,8 +14,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IExpensesRepo, ExpensesRepo>();
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? builder.Configuration["ConnectionStrings__DefaultConnection"]
+    ?? builder.Configuration["DATABASE_URL"]
+    ?? throw new Exception("Database connection string not found.");
+
 builder.Services.AddDbContext<ExpenseTrackerContext>(options =>
-    options.UseSqlite("Data Source=expenses.db"));
+    options.UseNpgsql(connectionString));
+
 
 var app = builder.Build();
 

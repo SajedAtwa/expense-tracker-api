@@ -9,6 +9,8 @@ RUN dotnet publish -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build /app/publish .
-ENV ASPNETCORE_URLS=http://+:8080
-EXPOSE 8080
+
+# Render sets $PORT automatically. Your Program.cs uses it.
+EXPOSE 10000
+
 ENTRYPOINT ["dotnet", "Expenses.dll"]

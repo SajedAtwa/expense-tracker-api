@@ -2,18 +2,21 @@ using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Data;
 using ExpenseTracker.Models;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ----------------------------
+// Services
+// ----------------------------
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IExpensesRepo, ExpensesRepo>();
+
+// Connection string resolution (Local + Render + Supabase compatible)
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection")
     ?? builder.Configuration["ConnectionStrings__DefaultConnection"]
@@ -23,26 +26,43 @@ var connectionString =
 builder.Services.AddDbContext<ExpenseTrackerContext>(options =>
     options.UseNpgsql(connectionString));
 
+// ----------------------------
+// Build App
+// ----------------------------
 
 var app = builder.Build();
 
+// Apply migrations automatically at startup
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ExpenseTrackerContext>();
     db.Database.Migrate();
 }
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+// ----------------------------
+// Middleware
+// ----------------------------
+
+// Swagger only in Development (best practice)
+if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Expense API v1");
-    c.RoutePrefix = "";
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Expense API v1");
+        c.RoutePrefix = "";
+    });
+}
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
+
+// ----------------------------
+// Render Port Binding
+// ----------------------------
+
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.Run();

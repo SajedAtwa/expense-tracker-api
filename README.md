@@ -1,34 +1,26 @@
-# ExpenseTracker API
+## ExpenseTracker API
 
-ASP.NET Core Web API for tracking expenses and income. Uses EF Core + SQL Server and exposes CRUD endpoints documented with Swagger.
+ASP.NET Core Web API for tracking expenses and income. Includes CRUD endpoints and Swagger UI.
 
-## Tech Stack
-- ASP.NET Core (.NET 7)
-- Entity Framework Core 7
-- SQLite
+### Tech Stack
+- .NET 7 / ASP.NET Core Web API
+- EF Core 7
+- PostgreSQL (Supabase)
 - AutoMapper
 - Swagger
 
-## Run Locally (SQLite)
+---
 
-This API now uses **SQLite** for persistence (no SQL Server / Docker required).
+## Running Locally
 
 ### Prereqs
 - .NET 7 SDK
 
-### Run
-From the solution folder:
+### Configure database connection (local)
+Set an environment variable named:
 
+`ConnectionStrings__DefaultConnection`
+
+Example (macOS/Linux):
 ```bash
-cd Expenses
-dotnet restore
-dotnet run
-
-
-## Endpoints
-- `GET /api/expenses`
-- `GET /api/expenses/{id}`
-- `POST /api/expenses`
-- `PUT /api/expenses/{id}`
-- `PATCH /api/expenses/{id}`
-- `DELETE /api/expenses/{id}`
+export ConnectionStrings__DefaultConnection="postgresql://postgres:PASSWORD@HOST:5432/postgres?sslmode=require"

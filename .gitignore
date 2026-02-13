@@ -1,10 +1,11 @@
 # env / secrets
 .env
+.env.*
+**/*.db
+**/*.sqlite
 
-# sqlite db files
-*.db
-*.db-shm
-*.db-wal
+
+
 *.key
 *.pem
 
@@ -20,3 +21,4 @@ publish-linux/
 .vscode/
 .idea/
 .DS_Store
+
